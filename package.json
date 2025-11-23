@@ -2,7 +2,9 @@
   "name": "@lexo/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "format": "prettier --write \"**/*.{ts,tsx,js,json,md,yml,yaml}\""
+  },
   "private": true,
   "devDependencies": {
     "@eslint/js": "^9.8.0",
@@ -44,9 +46,18 @@
   ],
   "dependencies": {
     "@nestjs/common": "^11.0.0",
+    "@nestjs/config": "^4.0.2",
     "@nestjs/core": "^11.0.0",
     "@nestjs/platform-express": "^11.0.0",
+    "@nestjs/swagger": "^11.2.3",
     "axios": "^1.6.0",
+    "joi": "^18.0.2",
+    "knex": "^3.1.0",
+    "nest-knexjs": "^0.0.28",
+    "nestjs-pino": "^4.4.1",
+    "pg": "^8.16.3",
+    "pino": "^9.14.0",
+    "pino-pretty": "^13.1.2",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.0"
   }

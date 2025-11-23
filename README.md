@@ -19,6 +19,7 @@
 - **Фронтенд:** [React](https://react.dev/) + [Vite](https://vitejs.dev/)
 
 Планується використання спільних бібліотек (libs) для:
+
 - типів (DTO, інтерфейси)
 - бізнес-логіки
 - утиліт, які можна шарити між backend та frontend
@@ -29,15 +30,11 @@
 
 ```txt
 Lexo/
-├── apps/
 │   ├── backend/      # NestJS API (ігрова логіка, слова, режими, юзери)
 │   └── frontend/     # React + Vite (інтерфейс гри)
-│
-├── libs/
-│   ├── shared-types/ # Спільні типи/DTO між фронтом і беком
-│   └── utils/        # Допоміжні функції, які можна перевикористовувати
 │
 ├── nx.json
 ├── package.json
 ├── tsconfig.base.json
 └── README.md
+```
