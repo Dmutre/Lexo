@@ -74,6 +74,11 @@
             "buildTarget": "@lexo/backend:build:production"
           }
         }
+      },
+      "test": {
+        "options": {
+          "passWithNoTests": true
+        }
       }
     }
   },
