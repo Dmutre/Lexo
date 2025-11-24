@@ -53,6 +53,41 @@
         "options": {
           "passWithNoTests": true
         }
+      },
+      "migrate:make": {
+        "executor": "nx:run-commands",
+        "options": {
+          "command": "npx knex migrate:make",
+          "cwd": "backend"
+        }
+      },
+      "migrate:latest": {
+        "executor": "nx:run-commands",
+        "options": {
+          "command": "npx knex migrate:latest --env development --knexfile knexfile.js",
+          "cwd": "backend"
+        }
+      },
+      "migrate:rollback": {
+        "executor": "nx:run-commands",
+        "options": {
+          "command": "npx knex migrate:rollback --knexfile knexfile.js",
+          "cwd": "backend"
+        }
+      },
+      "seed:make": {
+        "executor": "nx:run-commands",
+        "options": {
+          "command": "npx knex seed:make",
+          "cwd": "backend"
+        }
+      },
+      "seed:run": {
+        "executor": "nx:run-commands",
+        "options": {
+          "command": "npx knex seed:run --knexfile knexfile.js",
+          "cwd": "backend"
+        }
       }
     }
   },
