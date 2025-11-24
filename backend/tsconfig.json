@@ -9,12 +9,5 @@
     {
       "path": "./tsconfig.spec.json"
     }
-  ],
-  "compilerOptions": {
-    "plugins": [
-      {
-        "name": "@nestjs/swagger/plugin"
-      }
-    ]
-  }
+  ]
 }

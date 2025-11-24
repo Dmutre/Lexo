@@ -1,8 +1,8 @@
-import { Knex } from "knex";
-import { InjectConnection } from "nest-knexjs";
+import { Knex } from 'knex';
+import { InjectConnection } from 'nest-knexjs';
 
 export abstract class BaseRepository {
   abstract readonly tableName: string;
 
-  constructor(@InjectConnection() knex: Knex) {}
+  constructor(@InjectConnection() protected readonly knex: Knex) {}
 }

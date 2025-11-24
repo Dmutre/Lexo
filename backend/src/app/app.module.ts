@@ -4,6 +4,7 @@ import { ConfigModule } from '@nestjs/config';
 import configuration from './config/configuration';
 import validationSchema from './config/validation.schema';
 import { LoggerModule } from 'nestjs-pino';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { LoggerModule } from 'nestjs-pino';
         },
       },
     }),
+    AuthModule,
   ],
   controllers: [AppController],
 })

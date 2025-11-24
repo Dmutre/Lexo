@@ -4,9 +4,7 @@
  */
 exports.up = async function (knex) {
   await knex.schema.createTable('Users', (table) => {
-    table.uuid('userId')
-      .primary()
-      .defaultTo(knex.fn.uuid());
+    table.uuid('userId').primary().defaultTo(knex.fn.uuid());
 
     table.string('username', 50).notNullable().unique().index();
     table.string('email', 120).notNullable().unique().index();

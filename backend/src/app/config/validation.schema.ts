@@ -8,4 +8,7 @@ export default Joi.object({
   DATABASE_USER: Joi.string().required(),
   DATABASE_PASSWORD: Joi.string().required(),
   DATABASE_NAME: Joi.string().required(),
+  JWT_SECRET: Joi.string().required(),
+  JWT_REFRESH_TTL: Joi.string().default('7d'),
+  JWT_ACCESS_TTL: Joi.string().default('15m'),
 });
