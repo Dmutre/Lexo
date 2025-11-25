@@ -5,7 +5,7 @@ import styles from './auth-form.module.css';
 import { login, register } from '../api/auth-api';
 import { ApiResponse } from '@/shared/api/base-api';
 import { IAuthResponse } from '../api/types';
-import { useUserStore } from "@/entities/user/model/user.store";
+import { useUserStore } from '@/entities/user/model/user.store';
 
 type Mode = 'login' | 'signup';
 
