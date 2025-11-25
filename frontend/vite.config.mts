@@ -4,12 +4,13 @@ import react from '@vitejs/plugin-react';
 import tsconfigPaths from "vite-tsconfig-paths"
 
 export default defineConfig(() => ({
-  root: import.meta.dirname,
+  root: '.',
   cacheDir: '../node_modules/.vite/frontend',
   server: {
     port: 4200,
     host: 'localhost',
   },
+  base: './',
   preview: {
     port: 4200,
     host: 'localhost',
