@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "format": "prettier --write \"**/*.{ts,tsx,js,json,md,yml,yaml}\""
+    "format": "prettier --write \"**/*.{ts,tsx,js,json,md,yml,yaml}\"",
+    "build": "npx vite build"
   },
   "private": true,
   "devDependencies": {
