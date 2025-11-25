@@ -62,7 +62,6 @@
   "workspaces": [
     "packages/*",
     "backend",
-    "backend-e2e",
     "frontend"
   ],
   "dependencies": {

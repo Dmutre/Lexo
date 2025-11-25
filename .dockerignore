@@ -1,4 +1,2 @@
-## .dockerignore
-# Ignore node_modules directory to prevent copying unnecessary dependencies
 node_modules
-
+dist
