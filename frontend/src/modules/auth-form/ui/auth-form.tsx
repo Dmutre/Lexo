@@ -5,12 +5,14 @@ import styles from './auth-form.module.css';
 import { login, register } from '../api/auth-api';
 import { ApiResponse } from '@/shared/api/base-api';
 import { IAuthResponse } from '../api/types';
+import { useUserStore } from "@/entities/user/model/user.store";
 
 type Mode = 'login' | 'signup';
 
 export const AuthForm = () => {
   const [mode, setMode] = useState<Mode>('login');
   const [showPassword, setShowPassword] = useState(false);
+  const setIsAuth = useUserStore((state) => state.setIsAuth);
 
   const isLogin = mode === 'login';
 
@@ -44,6 +46,7 @@ export const AuthForm = () => {
     if (res.ok && res.data) {
       localStorage.setItem('accessToken', res.data.accessToken);
       localStorage.setItem('refreshToken', res.data.refreshToken);
+      setIsAuth(true);
     }
   };
 
