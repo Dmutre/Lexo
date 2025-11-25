@@ -1,0 +1,99 @@
+.root {
+  min-height: 100vh;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  background: radial-gradient(circle at top left, #1a365d, #0b1120 55%, #020617);
+  color: #f9fafb;
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #F7FAFC;
+}
+
+.leftPane {
+  flex: 1;
+  max-width: 520px;
+  padding: 2.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1.75rem;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.logo {
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #3b82f6, #22c55e);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.title {
+  font-size: 1.9rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.subtitle {
+  max-width: 26rem;
+  font-size: 0.95rem;
+  color: #cbd5f5;
+}
+
+.features {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: #e5e7eb;
+}
+
+.features li::before {
+  content: '•';
+  color: #60a5fa;
+  margin-right: 0.5rem;
+}
+
+.rightPane {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .root {
+    flex-direction: column;
+    padding: 1.5rem 1rem;
+  }
+
+  .leftPane {
+    max-width: none;
+    padding: 0 0 2rem 0;
+    align-items: flex-start;
+  }
+
+  .rightPane {
+    width: 100%;
+  }
+}
