@@ -6,9 +6,8 @@ import { TokensDto } from './dto/tokens.dto';
 import { LoginDto } from './dto/login.dto';
 import { UserResponse } from './dto/user.response';
 import { AuthGuard } from './guards/auth.guard';
-import { User } from '../../common/database/repositories/user.repository';
 import { TokenDto } from './dto/token.dto';
-
+import type { UserRequest } from '../../common/types/user-request';
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
@@ -34,7 +33,7 @@ export class AuthController {
   @UseGuards(AuthGuard)
   @Get('/me')
   @ApiOperation({ summary: 'Get current user info' })
-  getMe(@Req() request: Request & { user: User }): UserResponse {
+  getMe(@Req() request: UserRequest): UserResponse {
     const { password, ...userData } = request.user;
     return userData;
   }

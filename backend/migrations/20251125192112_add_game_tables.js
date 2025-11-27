@@ -17,21 +17,29 @@ exports.up = async function (knex) {
       .index();
 
     table
-      .enu('status', ['ACtIVE', 'FINISHED'], {
+      .enu('status', ['ACTIVE', 'FINISHED'], {
         useNative: true,
         enumName: 'GameSessionStatus',
       })
       .notNullable()
-      .defaultTo('active')
+      .defaultTo('ACTIVE')
+      .index();
+
+    table
+      .enu('language', ['ENGLISH', 'UKRAINIAN'], {
+        useNative: true,
+        enumName: 'GameSessionLanguage',
+      })
+      .notNullable()
       .index();
 
     table.integer('score').notNullable().defaultTo(0);
 
     table.timestamp('startedAt').defaultTo(knex.fn.now());
-    table.timestamp('endedAt');
+    table.timestamp('finishesAt').notNullable();
 
     table.timestamp('createdAt').defaultTo(knex.fn.now());
-    table.timestamp('updatedAt').defaultTo(knex.fn.now());
+    table.timestamp('updatedAt').defaultTo(knex.fn.now()).alter({ onUpdate: knex.fn.now() });
   });
 };
 

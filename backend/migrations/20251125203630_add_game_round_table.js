@@ -19,6 +19,7 @@ exports.up = async function (knex) {
     table.integer('scoreAwarded').defaultTo(0);
 
     table.timestamp('createdAt').defaultTo(knex.fn.now());
+    table.timestamp('updatedAt').defaultTo(knex.fn.now()).alter({ onUpdate: knex.fn.now() });
   });
 };
 

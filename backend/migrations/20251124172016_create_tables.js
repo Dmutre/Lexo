@@ -15,7 +15,7 @@ exports.up = async function (knex) {
     table.integer('experience').notNullable().defaultTo(0).index();
 
     table.timestamp('createdAt').defaultTo(knex.fn.now());
-    table.timestamp('updatedAt').defaultTo(knex.fn.now());
+    table.timestamp('updatedAt').defaultTo(knex.fn.now()).alter({ onUpdate: knex.fn.now() });
   });
 };
 
