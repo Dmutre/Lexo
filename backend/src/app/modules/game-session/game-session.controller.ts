@@ -6,8 +6,8 @@ import { CreateGameSessionDto } from './dto/create-game-sessioin.dto';
 import { ValidateAnswerDto } from './dto/validate-answer.dto';
 import { GetRoundDto } from './dto/get-round.dto';
 import { ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
-import { GameSession } from '../../common/database/repositories/game-session.repository';
-import { GameRound } from '../../common/database/repositories/game-round.repository';
+import { GameSessionDto } from './dto/game-session.dto';
+import { GameRoundDto } from './dto/game-round.dto';
 
 @ApiTags('game-session')
 @UseGuards(AuthGuard)
@@ -20,7 +20,7 @@ export class GameSessionController {
   public createGameSession(
     @Req() request: UserRequest,
     @Body() body: CreateGameSessionDto,
-  ): Promise<GameSession> {
+  ): Promise<GameSessionDto> {
     return this.gameSessionService.createGameSession(request.user.userId, body);
   }
 
@@ -30,7 +30,7 @@ export class GameSessionController {
   public getGameSession(
     @Req() request: UserRequest,
     @Param('id') gameSessionId: string,
-  ): Promise<GameSession> {
+  ): Promise<GameSessionDto> {
     return this.gameSessionService.getGameSession(gameSessionId, request.user.userId);
   }
 
@@ -39,7 +39,7 @@ export class GameSessionController {
   public getGameSessionRound(
     @Req() request: UserRequest,
     @Body() body: GetRoundDto,
-  ): Promise<GameRound> {
+  ): Promise<GameRoundDto> {
     return this.gameSessionService.getGameSessionRound(body.gameSessionId, request.user.userId);
   }
 
@@ -48,7 +48,7 @@ export class GameSessionController {
   public validateGameRoundAnswer(
     @Req() request: UserRequest,
     @Body() body: ValidateAnswerDto,
-  ): Promise<GameRound> {
+  ): Promise<GameRoundDto> {
     return this.gameSessionService.validateGameRoundAnswer(
       body.gameRoundId,
       body.userAnswer,
@@ -62,7 +62,7 @@ export class GameSessionController {
   public finalizeGameSession(
     @Req() request: UserRequest,
     @Param('id') gameSessionId: string,
-  ): Promise<GameSession> {
+  ): Promise<GameSessionDto> {
     return this.gameSessionService.finalizeUserGameSession(gameSessionId, request.user.userId);
   }
 }
