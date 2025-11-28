@@ -83,12 +83,18 @@ export class GameSessionRepository extends BaseRepository {
     if (!session) return null;
 
     const rounds = await this.knex('GameRounds')
-      .where({ sessionId: gameSessionId })
+      .where({ gameSessionId: gameSessionId })
       .orderBy('createdAt', 'asc');
 
     return {
       ...session,
       rounds,
     };
+  }
+
+  public async findExpiredSessions(): Promise<GameSession[]> {
+    return await this.knex<GameSession>(this.tableName)
+      .where('status', GameSessionStatus.ACTIVE)
+      .andWhere('finishesAt', '<', this.knex.fn.now());
   }
 }

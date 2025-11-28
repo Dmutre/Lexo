@@ -1,13 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { BaseDictionaryStrategy } from './base-dictionary.strategy';
-import * as path from 'path';
 
 @Injectable()
 export class UkrainianDictionaryStrategy extends BaseDictionaryStrategy {
-  protected dictionaryPath = path.join(process.cwd(), 'dictionaries', 'ua-dict.txt');
-
   constructor() {
-    super();
+    super('ua-dict.txt');
   }
 
   public getRandomLetters(count: number): string[] {

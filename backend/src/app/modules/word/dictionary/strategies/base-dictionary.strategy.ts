@@ -8,12 +8,19 @@ export interface DictionaryStrategy {
 }
 
 export abstract class BaseDictionaryStrategy implements DictionaryStrategy {
-  protected abstract dictionaryPath: string;
+  protected dictionaryPath: string;
 
   protected words: Set<string> = new Set();
 
-  constructor() {
-    this.words = this.loadDictionary();
+  constructor(dictionaryName: string) {
+    this.dictionaryPath = path.join(process.cwd(), 'dist', 'dictionaries', dictionaryName);
+    this.initializeDictionary();
+  }
+
+  protected initializeDictionary(): void {
+    if (this.words.size === 0) {
+      this.words = this.loadDictionary();
+    }
   }
 
   abstract getRandomLetters(count: number): string[];
@@ -24,6 +31,12 @@ export abstract class BaseDictionaryStrategy implements DictionaryStrategy {
   }
 
   protected loadDictionary(): Set<string> {
+    if (!this.dictionaryPath) {
+      throw new Error(
+        'Dictionary path is not set. Make sure dictionaryPath is initialized in the constructor.',
+      );
+    }
+
     const filePath = path.resolve(this.dictionaryPath);
 
     if (!fs.existsSync(filePath)) {

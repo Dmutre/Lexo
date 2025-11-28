@@ -49,12 +49,9 @@ export class GameRoundRepository extends BaseRepository {
     gameRoundId: string,
   ): Promise<(GameRound & { session: GameSession }) | null> {
     const result = await this.knex('GameRounds as gr')
-      .leftJoin('GameSessions as gs', 'gs.gameSessionId', 'gr.sessionId')
+      .leftJoin('GameSessions as gs', 'gs.gameSessionId', 'gr.gameSessionId')
       .where('gr.gameRoundId', gameRoundId)
-      .select(
-        'gr.*',
-        this.knex.raw('to_jsonb(gs.*) as session'), // або gs.* якщо треба плоско
-      )
+      .select('gr.*', this.knex.raw('to_jsonb(gs.*) as session'))
       .first();
 
     return result ?? null;
@@ -63,6 +60,12 @@ export class GameRoundRepository extends BaseRepository {
   public async findByGameSessionId(gameSessionId: string): Promise<GameRound[]> {
     return await this.knex<GameRound>(this.tableName)
       .where({ gameSessionId })
+      .orderBy('createdAt', 'asc');
+  }
+
+  public async getNotAnsweredRoundsByGameSessionId(gameSessionId: string): Promise<GameRound[]> {
+    return await this.knex<GameRound>(this.tableName)
+      .where({ gameSessionId, userAnswer: null })
       .orderBy('createdAt', 'asc');
   }
 }

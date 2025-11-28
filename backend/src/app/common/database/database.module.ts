@@ -2,8 +2,10 @@ import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { KnexModule } from 'nest-knexjs';
 import { UserRepository } from './repositories/user.repository';
+import { GameSessionRepository } from './repositories/game-session.repository';
+import { GameRoundRepository } from './repositories/game-round.repository';
 
-const providers = [UserRepository];
+const providers = [UserRepository, GameSessionRepository, GameRoundRepository];
 
 @Module({
   imports: [

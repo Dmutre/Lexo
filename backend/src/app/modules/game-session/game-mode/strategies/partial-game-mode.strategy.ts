@@ -2,7 +2,7 @@ import { DictionaryStrategy } from '../../../word/dictionary/strategies/base-dic
 import { BaseGameModeStrategy, GameModeTaskPayload } from './base-game-mode.strategy';
 
 export class PartialGameModeStrategy extends BaseGameModeStrategy {
-  public readonly gameDuration: number = 60; // 60 seconds
+  public readonly gameDuration: number = 90; // 1.5 minutes in seconds
 
   constructor(dictionary: DictionaryStrategy) {
     super(dictionary);

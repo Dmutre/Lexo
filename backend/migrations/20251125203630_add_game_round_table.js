@@ -7,9 +7,9 @@ exports.up = async function (knex) {
     table.uuid('gameRoundId').primary().defaultTo(knex.fn.uuid());
 
     table
-      .uuid('sessionId')
+      .uuid('gameSessionId')
       .notNullable()
-      .references('sessionId')
+      .references('gameSessionId')
       .inTable('GameSessions')
       .onDelete('CASCADE');
 
@@ -19,7 +19,7 @@ exports.up = async function (knex) {
     table.integer('scoreAwarded').defaultTo(0);
 
     table.timestamp('createdAt').defaultTo(knex.fn.now());
-    table.timestamp('updatedAt').defaultTo(knex.fn.now()).alter({ onUpdate: knex.fn.now() });
+    table.timestamp('updatedAt').defaultTo(knex.fn.now());
   });
 };
 

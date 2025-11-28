@@ -39,7 +39,7 @@ exports.up = async function (knex) {
     table.timestamp('finishesAt').notNullable();
 
     table.timestamp('createdAt').defaultTo(knex.fn.now());
-    table.timestamp('updatedAt').defaultTo(knex.fn.now()).alter({ onUpdate: knex.fn.now() });
+    table.timestamp('updatedAt').defaultTo(knex.fn.now());
   });
 };
 

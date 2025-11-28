@@ -15,7 +15,7 @@ export class RandomLetterStrategy extends BaseGameModeStrategy {
   }
 
   public validateAnswer(answer: string, { data }: GameModeTaskPayload): boolean {
-    const availableLetters: string[] = data.letters;
+    const availableLetters: string[] = data.task;
     const word = answer.toLowerCase();
 
     // Check dictionary existence

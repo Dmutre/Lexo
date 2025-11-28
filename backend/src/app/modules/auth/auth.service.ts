@@ -135,4 +135,13 @@ export class AuthService {
       throw new BadRequestException('Invalid refresh token');
     }
   }
+
+  public async verifyAccessToken(token: string): Promise<JwtPayload> {
+    try {
+      const payload = await this.jwtService.verifyAsync<JwtPayload>(token);
+      return payload;
+    } catch (error) {
+      throw new BadRequestException('Invalid access token');
+    }
+  }
 }
