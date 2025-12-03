@@ -22,7 +22,7 @@ export function App() {
         setIsAuth(true);
       }
     })();
-  }, []);
+  }, [setIsAuth]);
 
   return (
     <Routes>
