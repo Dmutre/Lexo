@@ -1,0 +1,54 @@
+import { useState } from 'react';
+import styles from './home.module.css';
+import { GameMode } from '@/entities/game-session/api/types';
+
+export const HomePage = () => {
+  const [selectedMode, setSelectedMode] = useState<GameMode | null>(null);
+
+  const handleSelect = (mode: GameMode) => {
+    setSelectedMode(mode);
+  };
+
+  return (
+    <div className={styles.root}>
+      <div className={styles.content}>
+        <div className={styles.brand}>
+          <div className={styles.brandLogo}>Lx</div>
+          <span className={styles.brandText}>Lexo</span>
+        </div>
+        <div>
+          <h2 className={styles.title}>Select a game mode</h2>
+          <p className={styles.hint}>Choose how you want to play today.</p>
+          <p className={styles.subtitle}>
+            Train partial guesses or practice letter precision to improve your Lexo skills.
+          </p>
+        </div>
+
+        <div className={styles.modes}>
+          <button
+            type="button"
+            className={`${styles.modeCard} ${
+              selectedMode === GameMode.PARTIALS ? styles.modeCardSelected : ''
+            }`}
+            onClick={() => handleSelect(GameMode.PARTIALS)}
+          >
+            <span className={styles.modeLabel}>Partials</span>
+          </button>
+
+          <button
+            type="button"
+            className={`${styles.modeCard} ${
+              selectedMode === GameMode.LETTERS ? styles.modeCardSelected : ''
+            }`}
+            onClick={() => handleSelect(GameMode.LETTERS)}
+          >
+            <span className={styles.modeLabel}>Letters</span>
+          </button>
+        </div>
+        <button type="button" disabled={!selectedMode} className={styles.playButton}>
+          Play
+        </button>
+      </div>
+    </div>
+  );
+};

@@ -3,6 +3,7 @@
 import { meApi } from '@/entities/user/api/user-api';
 import { useUserStore } from '@/entities/user/model/user.store';
 import { AuthPage } from '@/pages/auth/auth-page';
+import { HomePage } from '@/pages/home';
 import NotFoundPage from '@/pages/not-found/not-found.page';
 import { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
@@ -29,7 +30,7 @@ export function App() {
       {!isAuth ? (
         <Route path="auth" index element={<AuthPage />} />
       ) : (
-        <Route path="*" element={<HelloWorld />} />
+        <Route path="*" element={<HomePage />} />
       )}
       <Route path="*" element={<NotFoundPage />} />
     </Routes>

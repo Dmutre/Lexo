@@ -1,4 +1,7 @@
-export type GameMode = 'PARTIALS' | 'LETTERS';
+export enum GameMode {
+  PARTIALS = 'PARTIALS',
+  LETTERS = 'LETTERS',
+}
 
 export type GameStatus = 'ACTIVE' | 'FINISHED';
 
