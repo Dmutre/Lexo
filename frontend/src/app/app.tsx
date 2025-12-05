@@ -5,6 +5,7 @@ import { useUserStore } from '@/entities/user/model/user.store';
 import { AuthPage } from '@/pages/auth/auth-page';
 import { HomePage } from '@/pages/home';
 import NotFoundPage from '@/pages/not-found/not-found.page';
+import { PartialsModePage } from "@/pages/partials-mode";
 import { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 
@@ -30,7 +31,10 @@ export function App() {
       {!isAuth ? (
         <Route path="auth" index element={<AuthPage />} />
       ) : (
-        <Route path="*" element={<HomePage />} />
+        <>
+          <Route path="*" element={<HomePage />} />
+          <Route path="partials" element={<PartialsModePage />} />
+        </>
       )}
       <Route path="*" element={<NotFoundPage />} />
     </Routes>

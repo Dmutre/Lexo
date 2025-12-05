@@ -1,12 +1,31 @@
 import { useState } from 'react';
 import styles from './home.module.css';
-import { GameMode } from '@/entities/game-session/api/types';
+import { GameMode, SupportedLanguage } from '@/entities/game-session/api/types';
+import { useNavigate } from 'react-router-dom';
+import { createGameSessionApi } from '@/entities/game-session/api/game-session.api';
 
 export const HomePage = () => {
   const [selectedMode, setSelectedMode] = useState<GameMode | null>(null);
+  const navigate = useNavigate();
 
   const handleSelect = (mode: GameMode) => {
     setSelectedMode(mode);
+  };
+
+  const handlePlay = async () => {
+    const mode = selectedMode;
+    const route = mode === GameMode.PARTIALS ? '/partials' : '/letters';
+
+    if (!selectedMode) return;
+  
+    const data = await createGameSessionApi({
+      mode: selectedMode,
+      language: SupportedLanguage.ENGLISH,
+    });
+
+    if (data.ok && data.data?.gameSessionId) {
+      navigate(route);
+    }
   };
 
   return (
@@ -45,7 +64,12 @@ export const HomePage = () => {
             <span className={styles.modeLabel}>Letters</span>
           </button>
         </div>
-        <button type="button" disabled={!selectedMode} className={styles.playButton}>
+        <button
+          type="button"
+          onClick={handlePlay}
+          disabled={!selectedMode}
+          className={styles.playButton}
+        >
           Play
         </button>
       </div>

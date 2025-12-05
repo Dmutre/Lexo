@@ -5,7 +5,10 @@ export enum GameMode {
 
 export type GameStatus = 'ACTIVE' | 'FINISHED';
 
-export type SupportedLanguage = 'ENGLISH' | 'UKRAINIAN';
+export enum SupportedLanguage {
+  ENGLISH = 'ENGLISH',
+  UKRAINIAN = 'UKRAINIAN',
+}
 
 export interface ICreateGameSessionRequest {
   mode: GameMode;
