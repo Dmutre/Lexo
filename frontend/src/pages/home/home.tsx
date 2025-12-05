@@ -2,10 +2,15 @@ import { useState } from 'react';
 import styles from './home.module.css';
 import { GameMode, SupportedLanguage } from '@/entities/game-session/api/types';
 import { useNavigate } from 'react-router-dom';
-import { createGameSessionApi } from '@/entities/game-session/api/game-session.api';
+import {
+  createGameSessionApi,
+  getGameRoundApi,
+} from '@/entities/game-session/api/game-session.api';
+import { useGameSessionStore } from '@/entities/game-session/model/game-session.store';
 
 export const HomePage = () => {
   const [selectedMode, setSelectedMode] = useState<GameMode | null>(null);
+  const { gameSessionId, createGameSession, createGameRound } = useGameSessionStore();
   const navigate = useNavigate();
 
   const handleSelect = (mode: GameMode) => {
@@ -17,14 +22,27 @@ export const HomePage = () => {
     const route = mode === GameMode.PARTIALS ? '/partials' : '/letters';
 
     if (!selectedMode) return;
-  
+
     const data = await createGameSessionApi({
       mode: selectedMode,
       language: SupportedLanguage.ENGLISH,
     });
 
     if (data.ok && data.data?.gameSessionId) {
-      navigate(route);
+      createGameSession(data.data);
+      const gameRound = await getGameRoundApi({ gameSessionId: data.data.gameSessionId });
+      if (gameRound.ok && gameRound.data) {
+        createGameRound({
+          gameRoundId: gameRound.data.gameRoundId,
+          task:
+            typeof gameRound.data.taskPayload.data.task === 'string'
+              ? gameRound.data.taskPayload.data.task
+              : gameRound.data.taskPayload.data.task.join(''),
+          userAnswer: gameRound.data.userAnswer,
+          scoreAwarded: gameRound.data.scoreAwarded,
+        });
+        navigate(route);
+      }
     }
   };
 

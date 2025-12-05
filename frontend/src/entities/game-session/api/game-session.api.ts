@@ -31,7 +31,7 @@ export const getGameRoundApi = async (body: IGetGameRoundRequest) => {
 };
 
 export const validateAnswerApi = async (body: IValidateAnswerRequest) => {
-  const res = await client<IValidateAnswerResponse>('game-session/validate', {
+  const res = await client<IValidateAnswerResponse>('game-session/round/validate', {
     method: 'POST',
     body: JSON.stringify(body),
   });

@@ -1,7 +1,9 @@
 import { useEffect, useMemo, useState } from 'react';
 import styles from './partials-mode.page.module.css';
+import { useGameSessionStore } from '@/entities/game-session/model/game-session.store';
+import { validateAnswerApi } from '@/entities/game-session/api/game-session.api';
+import dayjs from 'dayjs';
 
-const TOTAL_SECONDS = 120;
 const CORRECT_MESSAGES = [
   '🎉 Perfect!',
   '⚡ Amazing!',
@@ -20,14 +22,16 @@ const ERROR_MESSAGES = [
 ];
 
 export const PartialsModePage = () => {
+  const { task, gameRoundId, scoreAwarded } = useGameSessionStore((state) => state.round);
+  const { startedAt, finishesAt, setScore, createGameRound } = useGameSessionStore();
   const [round, setRound] = useState(1);
-  const [letters] = useState('cke');
   const [answer, setAnswer] = useState('');
   const [feedback, setFeedback] = useState<null | { type: 'success' | 'error'; message: string }>(
     null,
   );
-  const [secondsLeft, setSecondsLeft] = useState(TOTAL_SECONDS);
-  const [score, setScore] = useState(0);
+  const [secondsLeft, setSecondsLeft] = useState(
+    dayjs(finishesAt).diff(dayjs(startedAt), 'second'),
+  );
   const [streak, setStreak] = useState(0);
   const [isShaking, setIsShaking] = useState(false);
   const [isCelebrating, setIsCelebrating] = useState(false);
@@ -38,11 +42,11 @@ export const PartialsModePage = () => {
     if (secondsLeft <= 0) return;
 
     const id = window.setInterval(() => {
-      setSecondsLeft((prev) => Math.max(prev - 1, 0));
+      setSecondsLeft(Math.max(dayjs(finishesAt).diff(dayjs(Date.now()), 'second'), 0));
     }, 1000);
 
     return () => window.clearInterval(id);
-  }, [secondsLeft]);
+  }, [secondsLeft, finishesAt]);
 
   const formattedTime = useMemo(() => {
     const m = Math.floor(secondsLeft / 60)
@@ -52,23 +56,33 @@ export const PartialsModePage = () => {
     return `${m}:${s}`;
   }, [secondsLeft]);
 
-  const handleValidate = () => {
-    const index = answer.toLowerCase().indexOf(letters.toLowerCase());
-    const isValid = index !== -1;
+  const handleValidate = async () => {
+    const validatedAnswer = await validateAnswerApi({
+      gameRoundId,
+      userAnswer: answer,
+    });
 
-    if (isValid) {
+    if (validatedAnswer.ok && validatedAnswer.data) {
+      const roundResult = validatedAnswer.data;
       const newStreak = streak + 1;
-      const points = 10 + (newStreak >= 3 ? 5 : 0); // Bonus for streak
-      setScore((prev) => prev + points);
+
+      setScore(roundResult.scoreAwarded);
       setStreak(newStreak);
 
       const randomMsg = CORRECT_MESSAGES[Math.floor(Math.random() * CORRECT_MESSAGES.length)];
       setFeedback({
         type: 'success',
-        message:
-          newStreak >= 3
-            ? `${randomMsg} ${newStreak}x STREAK! +${points} pts`
-            : `${randomMsg} +${points} pts`,
+        message: newStreak >= 3 ? `${randomMsg} ${newStreak}x STREAK!` : `${randomMsg}`,
+      });
+
+      createGameRound({
+        gameRoundId: roundResult.gameRoundId,
+        task:
+          typeof roundResult.taskPayload.data.task === 'string'
+            ? roundResult.taskPayload.data.task
+            : roundResult.taskPayload.data.task.join(''),
+        userAnswer: roundResult.userAnswer,
+        scoreAwarded: roundResult.scoreAwarded,
       });
 
       setIsCelebrating(true);
@@ -119,7 +133,7 @@ export const PartialsModePage = () => {
         <div className={styles.stats}>
           <div className={styles.statItem}>
             <span className={styles.statLabel}>Score</span>
-            <span className={styles.statValue}>{score}</span>
+            <span className={styles.statValue}>{scoreAwarded}</span>
           </div>
           <div className={styles.statItem}>
             <span className={styles.statLabel}>Round</span>
@@ -144,7 +158,7 @@ export const PartialsModePage = () => {
 
         <div className={styles.lettersRow}>
           <div className={`${styles.letters} ${styles.lettersPulse}`}>
-            {letters.split('').map((letter, idx) => (
+            {task.split('').map((letter, idx) => (
               <span
                 key={idx}
                 className={styles.letterBubble}

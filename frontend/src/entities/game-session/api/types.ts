@@ -3,7 +3,10 @@ export enum GameMode {
   LETTERS = 'LETTERS',
 }
 
-export type GameStatus = 'ACTIVE' | 'FINISHED';
+export enum GameStatus {
+  ACTIVE = 'ACTIVE',
+  FINISHED = 'FINISHED',
+}
 
 export enum SupportedLanguage {
   ENGLISH = 'ENGLISH',
@@ -20,9 +23,10 @@ export interface ICreateGameSessionResponse {
   userId: string;
   mode: GameMode;
   status: GameStatus;
-  finishesAt: string;
   language: SupportedLanguage;
   score: number;
+  startedAt: string;
+  finishesAt: string;
   createdAt: string;
   updatedAt: string;
 }
