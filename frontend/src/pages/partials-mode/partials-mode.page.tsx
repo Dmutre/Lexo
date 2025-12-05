@@ -53,6 +53,9 @@ export const PartialsModePage = () => {
 
     const id = window.setInterval(() => {
       updateTimeLeft();
+      if (secondsLeft <= 0) {
+        setGameStatus(GameStatus.FINISHED);
+      }
     }, 1000);
 
     return () => window.clearInterval(id);
@@ -193,7 +196,7 @@ export const PartialsModePage = () => {
             id="answer"
             type="text"
             className={styles.inputField}
-            placeholder="e.g. rocket"
+            placeholder="Your answer here"
             value={answer}
             onChange={(e) => {
               setAnswer(e.target.value);
