@@ -1,0 +1,1 @@
+export { PartialsModePage } from './partials-mode.page';
