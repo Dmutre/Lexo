@@ -476,6 +476,7 @@
   transform: translateY(-3px);
   box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
   background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  cursor: pointer;
 }
 
 .buttonPrimary:active {
