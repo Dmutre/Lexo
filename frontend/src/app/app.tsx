@@ -7,15 +7,12 @@ import { HomePage } from '@/pages/home';
 import NotFoundPage from '@/pages/not-found/not-found.page';
 import { PartialsModePage } from "@/pages/partials-mode";
 import { useEffect } from 'react';
-import { Route, Routes } from 'react-router-dom';
-
-const HelloWorld = () => {
-  return <h1>Hello, World!</h1>;
-};
+import { Route, Routes, useNavigate } from 'react-router-dom';
 
 export function App() {
   const isAuth = useUserStore((state) => state.isAuth);
   const setIsAuth = useUserStore((state) => state.setIsAuth);
+  const navigate = useNavigate();
 
   useEffect(() => {
     (async () => {
@@ -24,15 +21,15 @@ export function App() {
         setIsAuth(true);
       }
     })();
-  }, [setIsAuth]);
+  }, [setIsAuth, navigate]);
 
   return (
     <Routes>
       {!isAuth ? (
-        <Route path="auth" index element={<AuthPage />} />
+        <Route path="/" index element={<AuthPage />} />
       ) : (
         <>
-          <Route path="*" element={<HomePage />} />
+          <Route path="/" element={<HomePage />} />
           <Route path="partials" element={<PartialsModePage />} />
         </>
       )}

@@ -3,6 +3,8 @@ import styles from './partials-mode.page.module.css';
 import { useGameSessionStore } from '@/entities/game-session/model/game-session.store';
 import { validateAnswerApi } from '@/entities/game-session/api/game-session.api';
 import dayjs from 'dayjs';
+import { GameOver } from '@/modules/game-over/ui/game-over';
+import { GameStatus } from '@/entities/game-session/api/types';
 
 const CORRECT_MESSAGES = [
   '🎉 Perfect!',
@@ -22,8 +24,11 @@ const ERROR_MESSAGES = [
 ];
 
 export const PartialsModePage = () => {
-  const { task, gameRoundId, scoreAwarded } = useGameSessionStore((state) => state.round);
-  const { startedAt, finishesAt, setScore, createGameRound } = useGameSessionStore();
+  const gameSession = useGameSessionStore();
+  const { task, gameRoundId, scoreAwarded } = gameSession.round || {};
+  const { startedAt, finishesAt, setScore, createGameRound, setGameStatus, status } =
+    gameSession;
+
   const [round, setRound] = useState(1);
   const [answer, setAnswer] = useState('');
   const [feedback, setFeedback] = useState<null | { type: 'success' | 'error'; message: string }>(
@@ -39,10 +44,15 @@ export const PartialsModePage = () => {
   const isTimerDanger = secondsLeft <= 15;
 
   useEffect(() => {
-    if (secondsLeft <= 0) return;
+    const updateTimeLeft = () => {
+      const timeLeft = dayjs(finishesAt).diff(dayjs(Date.now()), 'second');
+      setSecondsLeft(Math.max(timeLeft, 0));
+    };
+
+    updateTimeLeft();
 
     const id = window.setInterval(() => {
-      setSecondsLeft(Math.max(dayjs(finishesAt).diff(dayjs(Date.now()), 'second'), 0));
+      updateTimeLeft();
     }, 1000);
 
     return () => window.clearInterval(id);
@@ -101,10 +111,15 @@ export const PartialsModePage = () => {
   };
 
   const handleEndEarly = () => {
-    // For now this just stops the timer. Navigation or summary can be added later.
-    setSecondsLeft(0);
+    setGameStatus(GameStatus.FINISHED);
   };
 
+  // Game over screen
+  if (status === GameStatus.FINISHED) {
+    return <GameOver round={round} />;
+  }
+
+  // Active game screen
   return (
     <div className={styles.root}>
       <div

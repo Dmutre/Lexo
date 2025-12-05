@@ -21,10 +21,11 @@ interface IGameSessionState {
 }
 
 type GameSessionActions = {
-  createGameSession: (sessionData: InitialGameSessionStateType) => void;
+  setGameSession: (sessionData: InitialGameSessionStateType) => void;
   clearGameSession: () => void;
   createGameRound: (roundData: IGameRound) => void;
   setScore: (score: number) => void;
+  setGameStatus: (status: GameStatus) => void;
 };
 
 type InitialGameSessionStateType = Omit<IGameSessionState, 'round'>;
@@ -51,7 +52,7 @@ export const useGameSessionStore = create<IGameSessionState & GameSessionActions
   ...initialState,
   round: initialRoundState,
 
-  createGameSession: (sessionData: InitialGameSessionStateType) =>
+  setGameSession: (sessionData: InitialGameSessionStateType) =>
     set(() => ({
       ...sessionData,
     })),
@@ -65,8 +66,14 @@ export const useGameSessionStore = create<IGameSessionState & GameSessionActions
     set(() => ({
       round: roundData,
     })),
+
   setScore: (score: number) =>
     set(() => ({
       score,
+    })),
+
+  setGameStatus: (status: GameStatus) =>
+    set(() => ({
+      status,
     })),
 }));

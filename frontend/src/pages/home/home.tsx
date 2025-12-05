@@ -10,7 +10,7 @@ import { useGameSessionStore } from '@/entities/game-session/model/game-session.
 
 export const HomePage = () => {
   const [selectedMode, setSelectedMode] = useState<GameMode | null>(null);
-  const { gameSessionId, createGameSession, createGameRound } = useGameSessionStore();
+  const { setGameSession, createGameRound } = useGameSessionStore();
   const navigate = useNavigate();
 
   const handleSelect = (mode: GameMode) => {
@@ -29,7 +29,7 @@ export const HomePage = () => {
     });
 
     if (data.ok && data.data?.gameSessionId) {
-      createGameSession(data.data);
+      setGameSession(data.data);
       const gameRound = await getGameRoundApi({ gameSessionId: data.data.gameSessionId });
       if (gameRound.ok && gameRound.data) {
         createGameRound({
