@@ -1,5 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
+import { isAbbreviation } from '../../utils/is-abbrevation';
 
 export interface DictionaryStrategy {
   getRandomLetters(count: number): string[];
@@ -46,6 +47,7 @@ export abstract class BaseDictionaryStrategy implements DictionaryStrategy {
     const fileContent = fs.readFileSync(filePath, 'utf-8');
     const words = fileContent
       .split('\n')
+      .filter((w) => !isAbbreviation(w))
       .map((w) => w.trim().toLowerCase())
       .filter(Boolean);
 
