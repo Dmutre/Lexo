@@ -12,7 +12,7 @@ export class GameSessionFinalizer {
     private readonly gameSessionService: GameSessionService,
   ) {}
 
-  @Cron(CronExpression.EVERY_30_SECONDS)
+  @Cron(CronExpression.EVERY_10_SECONDS)
   public async finalizeExpiredSessions() {
     this.logger.log('Running session finalizer job...');
 

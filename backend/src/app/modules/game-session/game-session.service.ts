@@ -163,10 +163,9 @@ export class GameSessionService {
       throw new NotFoundException('Game session not found');
     }
 
-    const nowDate = new Date();
-    if (nowDate < gameSession.finishesAt || gameSession.status === GameSessionStatus.FINISHED) {
+    if (gameSession.status === GameSessionStatus.FINISHED) {
       this.logger.log('Game session is still active or already finished. No finalization needed.');
-      return;
+      throw new BadRequestException('Game session is already finished');
     }
 
     const totalScore = gameSession.rounds.reduce(
