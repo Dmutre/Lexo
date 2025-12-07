@@ -216,7 +216,7 @@
   font-size: 0.8rem;
   color: #9ca3af;
 }
-
+/* 
 .letters {
   display: inline-flex;
   align-items: center;
@@ -230,11 +230,11 @@
   text-transform: uppercase;
   font-weight: 700;
   gap: 0.3rem;
-}
+} */
 
-.lettersPulse {
+/* .lettersPulse {
   animation: lettersPulse 3s ease-in-out infinite;
-}
+} */
 
 @keyframes lettersPulse {
   0%,
@@ -247,7 +247,7 @@
   }
 }
 
-.letterBubble {
+/* .letterBubble {
   display: inline-block;
   animation: letterBounce 1s ease-in-out;
 }
@@ -264,18 +264,18 @@
     transform: translateY(0);
     opacity: 1;
   }
-}
+} */
 
 .lettersLabel {
   font-size: 0.8rem;
   color: #9ca3af;
 }
 
-.lettersRow {
+/* .lettersRow {
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
+} */
 
 .inputBlock {
   display: flex;

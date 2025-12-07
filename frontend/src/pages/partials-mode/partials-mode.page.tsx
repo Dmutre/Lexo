@@ -6,8 +6,9 @@ import {
   validateAnswerApi,
 } from '@/entities/game-session/api/game-session.api';
 import dayjs from 'dayjs';
-import { GameStatus } from '@/entities/game-session/api/types';
+import { GameMode, GameStatus } from '@/entities/game-session/api/types';
 import { useNavigate } from 'react-router-dom';
+import { LettersRow } from '@/widget/letters-row';
 
 const CORRECT_MESSAGES = [
   '🎉 Perfect!',
@@ -33,6 +34,7 @@ export const PartialsModePage = () => {
     startedAt,
     finishesAt,
     gameSessionId,
+    mode,
     setGameSession,
     setScore,
     createGameRound,
@@ -137,6 +139,10 @@ export const PartialsModePage = () => {
     }
   };
 
+  const getLabelForMode = (partial: string, letters: string) => {
+    return mode === GameMode.PARTIALS ? partial : letters;
+  };
+
   // Active game screen
   return (
     <div className={styles.root}>
@@ -149,8 +155,10 @@ export const PartialsModePage = () => {
           <div className={styles.brand}>
             <div className={styles.logo}>Lx</div>
             <div className={styles.titleBlock}>
-              <h1 className={styles.title}>Partials mode</h1>
-              <p className={styles.subtitle}>Use the given letters inside a full word.</p>
+              <h1 className={styles.title}>{getLabelForMode('Partials mode', 'Letters mode')}</h1>
+              <p className={styles.subtitle}>
+                Use {getLabelForMode('the', '')} given {getLabelForMode('fragment', 'letters')} inside a full word.
+              </p>
             </div>
           </div>
 
@@ -186,22 +194,12 @@ export const PartialsModePage = () => {
         </div>
 
         <div className={styles.roundInfo}>
-          <span className={styles.lettersLabel}>Use this fragment:</span>
+          <span className={styles.lettersLabel}>
+            Use {getLabelForMode('this fragment', 'these letters')}:
+          </span>
         </div>
 
-        <div className={styles.lettersRow}>
-          <div className={`${styles.letters} ${styles.lettersPulse}`}>
-            {task.split('').map((letter, idx) => (
-              <span
-                key={idx}
-                className={styles.letterBubble}
-                style={{ animationDelay: `${idx * 0.1}s` }}
-              >
-                {letter}
-              </span>
-            ))}
-          </div>
-        </div>
+        <LettersRow task={task || ''} mode={mode} />
 
         <div className={styles.inputBlock}>
           <label className={styles.inputLabel} htmlFor="answer">
@@ -226,9 +224,11 @@ export const PartialsModePage = () => {
             }}
             disabled={secondsLeft <= 0}
           />
-          <p className={styles.inputHint}>
-            Your word must contain the fragment exactly in this order.
-          </p>
+          {mode === GameMode.PARTIALS && (
+            <p className={styles.inputHint}>
+              Your word must contain the fragment exactly in this order.
+            </p>
+          )}
         </div>
 
         {feedback && (

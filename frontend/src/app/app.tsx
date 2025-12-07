@@ -31,6 +31,7 @@ export function App() {
         <>
           <Route path="/" element={<HomePage />} />
           <Route path="partials" element={<PartialsModePage />} />
+          <Route path="letters" element={<PartialsModePage />} />
           <Route path="game-over" element={<GameOver />} />
         </>
       )}

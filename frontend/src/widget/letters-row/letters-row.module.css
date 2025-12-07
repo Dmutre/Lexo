@@ -1,0 +1,87 @@
+.lettersRow {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.lettersGrid {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.letterTile {
+  width: 70px;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 1rem;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.25), rgba(34, 197, 94, 0.25));
+  border: 3px solid rgba(148, 163, 184, 0.6);
+  font-size: 2rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #f9fafb;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2), inset 0 2px 6px rgba(255, 255, 255, 0.1);
+  animation: letterBounce 0.6s ease-out;
+  transition: transform 0.2s ease;
+}
+
+.letterTile:hover {
+  transform: translateY(-3px);
+}
+
+.letters {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.6rem 1.2rem;
+  border-radius: 999px;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(34, 197, 94, 0.15));
+  border: 2px solid rgba(148, 163, 184, 0.6);
+  font-size: 1.6rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  font-weight: 700;
+  gap: 0.3rem;
+}
+
+.lettersPulse {
+  animation: lettersPulse 3s ease-in-out infinite;
+}
+
+.letterBubble {
+  display: inline-block;
+  animation: letterBounce 1s ease-in-out;
+}
+
+@keyframes letterBounce {
+  0% {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  50% {
+    transform: translateY(5px);
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 640px) {
+  .lettersGrid {
+    gap: 0.75rem;
+  }
+
+  .letterTile {
+    width: 60px;
+    height: 60px;
+    font-size: 1.6rem;
+  }
+}
