@@ -29,7 +29,7 @@ const ERROR_MESSAGES = [
 
 export const PartialsModePage = () => {
   const gameSession = useGameSessionStore();
-  const { task, gameRoundId, scoreAwarded } = gameSession.round || {};
+  const { task, gameRoundId } = gameSession.round || {};
   const {
     startedAt,
     finishesAt,
@@ -157,7 +157,8 @@ export const PartialsModePage = () => {
             <div className={styles.titleBlock}>
               <h1 className={styles.title}>{getLabelForMode('Partials mode', 'Letters mode')}</h1>
               <p className={styles.subtitle}>
-                Use {getLabelForMode('the', '')} given {getLabelForMode('fragment', 'letters')} inside a full word.
+                Use {getLabelForMode('the', '')} given {getLabelForMode('fragment', 'letters')}{' '}
+                inside a full word.
               </p>
             </div>
           </div>
@@ -172,10 +173,6 @@ export const PartialsModePage = () => {
         </div>
 
         <div className={styles.stats}>
-          <div className={styles.statItem}>
-            <span className={styles.statLabel}>Score</span>
-            <span className={styles.statValue}>{scoreAwarded}</span>
-          </div>
           <div className={styles.statItem}>
             <span className={styles.statLabel}>Round</span>
             <span className={styles.statValue}>{round}</span>
