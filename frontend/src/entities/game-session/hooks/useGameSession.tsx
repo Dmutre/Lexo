@@ -4,19 +4,18 @@ import {
   getGameRoundApi,
   getGameSessionDetailsApi,
 } from '../api/game-session.api';
-import { GameMode, SupportedLanguage } from '../api/types';
 import { useGameSessionStore } from '../model/game-session.store';
 
 export const useGameSession = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const { gameSessionId, createGameRound, setGameSession } = useGameSessionStore();
+  const { gameSessionId, mode, language, createGameRound, setGameSession } = useGameSessionStore();
 
   const startGame = async () => {
     setIsLoading(true);
     try {
       const sessionResponse = await createGameSessionApi({
-        mode: GameMode.PARTIALS,
-        language: SupportedLanguage.ENGLISH,
+        mode: mode,
+        language: language,
       });
 
       if (sessionResponse.ok && sessionResponse.data) {
