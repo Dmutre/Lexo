@@ -36,7 +36,6 @@ export const PartialsModePage = () => {
     setGameSession,
     setScore,
     createGameRound,
-    setGameStatus,
     status,
   } = gameSession;
   const navigate = useNavigate();
@@ -55,6 +54,13 @@ export const PartialsModePage = () => {
 
   const isTimerDanger = secondsLeft <= 15;
 
+  const endGame = async () => {
+    const gameInfo = await finishGameSessionApi(gameSessionId);
+    if (gameInfo.ok && gameInfo.data) {
+      setGameSession(gameInfo.data);
+    }
+  };
+
   useEffect(() => {
     const updateTimeLeft = () => {
       const timeLeft = dayjs(finishesAt).diff(dayjs(Date.now()), 'second');
@@ -66,12 +72,12 @@ export const PartialsModePage = () => {
     const id = window.setInterval(() => {
       updateTimeLeft();
       if (secondsLeft <= 0) {
-        setGameStatus(GameStatus.FINISHED);
+        endGame();
       }
     }, 1000);
 
     return () => window.clearInterval(id);
-  }, [setGameStatus, secondsLeft, finishesAt]);
+  }, [secondsLeft, finishesAt]);
 
   useEffect(() => {
     if (status === GameStatus.FINISHED) {
@@ -128,13 +134,6 @@ export const PartialsModePage = () => {
 
       setIsShaking(true);
       setTimeout(() => setIsShaking(false), 500);
-    }
-  };
-
-  const handleEndEarly = async () => {
-    const gameInfo = await finishGameSessionApi(gameSessionId);
-    if (gameInfo.ok && gameInfo.data) {
-      setGameSession(gameInfo.data);
     }
   };
 
@@ -236,7 +235,7 @@ export const PartialsModePage = () => {
         )}
 
         <div className={styles.actions}>
-          <button type="button" className={styles.buttonSecondary} onClick={handleEndEarly}>
+          <button type="button" className={styles.buttonSecondary} onClick={endGame}>
             End game
           </button>
           <button

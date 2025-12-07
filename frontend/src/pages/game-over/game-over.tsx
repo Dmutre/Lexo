@@ -14,7 +14,6 @@ export const GameOver = () => {
   };
 
   const handlePlayAgain = async () => {
-    // clearGameSession();
     const isGameStarted = await startGame();
     if (isGameStarted) {
       navigate('/partials');

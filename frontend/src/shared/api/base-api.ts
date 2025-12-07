@@ -1,4 +1,5 @@
 import { refreshTokenApi } from '@/entities/user/api/user-api';
+import { useUserStore } from '@/entities/user/model/user.store';
 
 export const BASE_URL = 'http://91.219.61.93:3011';
 
@@ -43,8 +44,10 @@ export const client = async <TData>(
         if (res.ok && res.data) {
           localStorage.setItem('accessToken', res.data.accessToken);
           localStorage.setItem('refreshToken', res.data.refreshToken);
+          config.headers.Authorization = `Bearer ${res.data.accessToken}`;
           return client<TData>(endpoint, config, true);
         }
+        useUserStore.getState().setIsAuth(false);
       }
 
       const data: TData = await response.json();
