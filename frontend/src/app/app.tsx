@@ -8,12 +8,11 @@ import NotFoundPage from '@/pages/not-found/not-found.page';
 import { GameOver } from '@/pages/game-over/game-over';
 import { PartialsModePage } from '@/pages/partials-mode';
 import { useEffect } from 'react';
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 
 export function App() {
   const isAuth = useUserStore((state) => state.isAuth);
   const setIsAuth = useUserStore((state) => state.setIsAuth);
-  const navigate = useNavigate();
 
   useEffect(() => {
     (async () => {
@@ -22,7 +21,7 @@ export function App() {
         setIsAuth(true);
       }
     })();
-  }, [setIsAuth, navigate]);
+  }, [setIsAuth]);
 
   return (
     <Routes>
