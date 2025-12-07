@@ -78,7 +78,7 @@ export const HomePage = () => {
                 onClick={() => handleLanguageSelect(SupportedLanguage.ENGLISH)}
               >
                 <span className={styles.modeIcon} role="img" aria-label="English">
-                  🇬🇧
+                  🇬🇧🇺🇸🇦🇺
                 </span>
                 <span className={styles.modeLabel}>English</span>
               </button>
