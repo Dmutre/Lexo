@@ -1,10 +1,13 @@
 import { useEffect, useMemo, useState } from 'react';
 import styles from './partials-mode.page.module.css';
 import { useGameSessionStore } from '@/entities/game-session/model/game-session.store';
-import { validateAnswerApi } from '@/entities/game-session/api/game-session.api';
+import {
+  finishGameSessionApi,
+  validateAnswerApi,
+} from '@/entities/game-session/api/game-session.api';
 import dayjs from 'dayjs';
-import { GameOver } from '@/modules/game-over/ui/game-over';
 import { GameStatus } from '@/entities/game-session/api/types';
+import { useNavigate } from "react-router-dom";
 
 const CORRECT_MESSAGES = [
   '🎉 Perfect!',
@@ -26,8 +29,17 @@ const ERROR_MESSAGES = [
 export const PartialsModePage = () => {
   const gameSession = useGameSessionStore();
   const { task, gameRoundId, scoreAwarded } = gameSession.round || {};
-  const { startedAt, finishesAt, setScore, createGameRound, setGameStatus, status } =
-    gameSession;
+  const {
+    startedAt,
+    finishesAt,
+    gameSessionId,
+    setGameSession,
+    setScore,
+    createGameRound,
+    setGameStatus,
+    status,
+  } = gameSession;
+  const navigate = useNavigate();
 
   const [round, setRound] = useState(1);
   const [answer, setAnswer] = useState('');
@@ -59,7 +71,13 @@ export const PartialsModePage = () => {
     }, 1000);
 
     return () => window.clearInterval(id);
-  }, [secondsLeft, finishesAt]);
+  }, [setGameStatus, secondsLeft, finishesAt]);
+
+  useEffect(() => {
+    if (status === GameStatus.FINISHED) {
+      navigate('/game-over');
+    }
+  }, [status, navigate]);
 
   const formattedTime = useMemo(() => {
     const m = Math.floor(secondsLeft / 60)
@@ -113,14 +131,12 @@ export const PartialsModePage = () => {
     }
   };
 
-  const handleEndEarly = () => {
-    setGameStatus(GameStatus.FINISHED);
+  const handleEndEarly = async () => {
+    const gameInfo = await finishGameSessionApi(gameSessionId);
+    if (gameInfo.ok && gameInfo.data) {
+      setGameSession(gameInfo.data);
+    }
   };
-
-  // Game over screen
-  if (status === GameStatus.FINISHED) {
-    return <GameOver round={round} />;
-  }
 
   // Active game screen
   return (

@@ -37,3 +37,14 @@ export const validateAnswerApi = async (body: IValidateAnswerRequest) => {
   });
   return res;
 };
+
+export const finishGameSessionApi = async (gameSessionId: string) => {
+  const res = await client<IGetGameSessionDetailsResponse>(
+    `game-session/${gameSessionId}/finalize`,
+    {
+      method: 'PUT',
+    },
+  );
+
+  return res;
+};

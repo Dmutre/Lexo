@@ -3,16 +3,9 @@ import styles from './game-over.module.css';
 import { useGameSessionStore } from '@/entities/game-session/model/game-session.store';
 import { useNavigate } from 'react-router-dom';
 
-interface IGameOverProps {
-  round: number;
-}
-
-export const GameOver = ({ round }: IGameOverProps) => {
+export const GameOver = () => {
   const { startGame, isLoading } = useGameSession();
-  const {
-    clearGameSession,
-    score,
-  } = useGameSessionStore();
+  const { clearGameSession, score } = useGameSessionStore();
   const navigate = useNavigate();
 
   const handleGoHome = () => {
@@ -20,9 +13,12 @@ export const GameOver = ({ round }: IGameOverProps) => {
     navigate('/');
   };
 
-  const handlePlayAgain = () => {
-    clearGameSession();
-    startGame();
+  const handlePlayAgain = async () => {
+    // clearGameSession();
+    const isGameStarted = await startGame();
+    if (isGameStarted) {
+      navigate('/partials');
+    }
   };
   return (
     <div className={styles.root}>
@@ -39,12 +35,6 @@ export const GameOver = ({ round }: IGameOverProps) => {
           <div className={styles.finalScoreContainer}>
             <span className={styles.finalScoreLabel}>Final Score</span>
             <span className={styles.finalScoreValue}>{score || 0}</span>
-          </div>
-          <div className={styles.gameOverInfo}>
-            <div className={styles.gameOverStatItem}>
-              <span className={styles.gameOverStatLabel}>Rounds completed</span>
-              <span className={styles.gameOverStatValue}>{round - 1}</span>
-            </div>
           </div>
         </div>
 

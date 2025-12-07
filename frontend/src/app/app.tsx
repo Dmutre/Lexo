@@ -5,7 +5,8 @@ import { useUserStore } from '@/entities/user/model/user.store';
 import { AuthPage } from '@/pages/auth/auth-page';
 import { HomePage } from '@/pages/home';
 import NotFoundPage from '@/pages/not-found/not-found.page';
-import { PartialsModePage } from "@/pages/partials-mode";
+import { GameOver } from '@/pages/game-over/game-over';
+import { PartialsModePage } from '@/pages/partials-mode';
 import { useEffect } from 'react';
 import { Route, Routes, useNavigate } from 'react-router-dom';
 
@@ -31,6 +32,7 @@ export function App() {
         <>
           <Route path="/" element={<HomePage />} />
           <Route path="partials" element={<PartialsModePage />} />
+          <Route path="game-over" element={<GameOver />} />
         </>
       )}
       <Route path="*" element={<NotFoundPage />} />

@@ -49,8 +49,10 @@ export const useGameSession = () => {
           });
         }
       }
+      return true;
     } catch (error) {
       console.error('Failed to start game:', error);
+      return false;
     } finally {
       setIsLoading(false);
     }
