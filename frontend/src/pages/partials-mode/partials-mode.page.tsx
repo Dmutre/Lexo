@@ -7,7 +7,7 @@ import {
 } from '@/entities/game-session/api/game-session.api';
 import dayjs from 'dayjs';
 import { GameStatus } from '@/entities/game-session/api/types';
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
 const CORRECT_MESSAGES = [
   '🎉 Perfect!',
@@ -213,6 +213,13 @@ export const PartialsModePage = () => {
             className={styles.inputField}
             placeholder="Your answer here"
             value={answer}
+            autoFocus={true}
+            autoComplete="off"
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                handleValidate();
+              }
+            }}
             onChange={(e) => {
               setAnswer(e.target.value);
               setFeedback(null);

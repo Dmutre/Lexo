@@ -10,11 +10,18 @@ import { useGameSessionStore } from '@/entities/game-session/model/game-session.
 
 export const HomePage = () => {
   const [selectedMode, setSelectedMode] = useState<GameMode | null>(null);
+  const [selectedLanguage, setSelectedLanguage] = useState<SupportedLanguage>(
+    SupportedLanguage.ENGLISH,
+  );
   const { setGameSession, createGameRound } = useGameSessionStore();
   const navigate = useNavigate();
 
   const handleSelect = (mode: GameMode) => {
     setSelectedMode(mode);
+  };
+
+  const handleLanguageSelect = (language: SupportedLanguage) => {
+    setSelectedLanguage(language);
   };
 
   const handlePlay = async () => {
@@ -25,7 +32,7 @@ export const HomePage = () => {
 
     const data = await createGameSessionApi({
       mode: selectedMode,
-      language: SupportedLanguage.ENGLISH,
+      language: selectedLanguage,
     });
 
     if (data.ok && data.data?.gameSessionId) {
@@ -53,35 +60,81 @@ export const HomePage = () => {
           <div className={styles.brandLogo}>Lx</div>
           <span className={styles.brandText}>Lexo</span>
         </div>
-        <div>
-          <h2 className={styles.title}>Select a game mode</h2>
-          <p className={styles.hint}>Choose how you want to play today.</p>
-          <p className={styles.subtitle}>
-            Train partial guesses or practice letter precision to improve your Lexo skills.
-          </p>
+
+        <div className={styles.welcomeSection}>
+          <h1 className={styles.mainTitle}>Welcome to Lexo</h1>
+          <p className={styles.mainSubtitle}>Choose your language and game mode to start playing</p>
         </div>
 
-        <div className={styles.modes}>
-          <button
-            type="button"
-            className={`${styles.modeCard} ${
-              selectedMode === GameMode.PARTIALS ? styles.modeCardSelected : ''
-            }`}
-            onClick={() => handleSelect(GameMode.PARTIALS)}
-          >
-            <span className={styles.modeLabel}>Partials</span>
-          </button>
+        <div className={styles.selectionGroup}>
+          <div className={styles.section}>
+            <h2 className={styles.sectionTitle}>Language</h2>
+            <div className={styles.modes}>
+              <button
+                type="button"
+                className={`${styles.modeCard} ${
+                  selectedLanguage === SupportedLanguage.ENGLISH ? styles.modeCardSelected : ''
+                }`}
+                onClick={() => handleLanguageSelect(SupportedLanguage.ENGLISH)}
+              >
+                <span className={styles.modeIcon} role="img" aria-label="English">
+                  🇬🇧
+                </span>
+                <span className={styles.modeLabel}>English</span>
+              </button>
 
-          <button
-            type="button"
-            className={`${styles.modeCard} ${
-              selectedMode === GameMode.LETTERS ? styles.modeCardSelected : ''
-            }`}
-            onClick={() => handleSelect(GameMode.LETTERS)}
-          >
-            <span className={styles.modeLabel}>Letters</span>
-          </button>
+              <button
+                type="button"
+                className={`${styles.modeCard} ${
+                  selectedLanguage === SupportedLanguage.UKRAINIAN ? styles.modeCardSelected : ''
+                }`}
+                onClick={() => handleLanguageSelect(SupportedLanguage.UKRAINIAN)}
+              >
+                <span className={styles.modeIcon} role="img" aria-label="Ukrainian">
+                  🇺🇦
+                </span>
+                <span className={styles.modeLabel}>Ukrainian</span>
+              </button>
+            </div>
+          </div>
+
+          <div className={styles.divider}></div>
+
+          <div className={styles.section}>
+            <h2 className={styles.sectionTitle}>Game Mode</h2>
+            <p className={styles.sectionHint}>Choose how you want to play</p>
+            <div className={styles.modes}>
+              <button
+                type="button"
+                className={`${styles.modeCard} ${
+                  selectedMode === GameMode.PARTIALS ? styles.modeCardSelected : ''
+                }`}
+                onClick={() => handleSelect(GameMode.PARTIALS)}
+              >
+                <span className={styles.modeIcon} role="img" aria-label="Puzzle piece">
+                  🧩
+                </span>
+                <span className={styles.modeLabel}>Partials</span>
+                <span className={styles.modeDescription}>Train partial guesses</span>
+              </button>
+
+              <button
+                type="button"
+                className={`${styles.modeCard} ${
+                  selectedMode === GameMode.LETTERS ? styles.modeCardSelected : ''
+                }`}
+                onClick={() => handleSelect(GameMode.LETTERS)}
+              >
+                <span className={styles.modeIcon} role="img" aria-label="Letters">
+                  🔤
+                </span>
+                <span className={styles.modeLabel}>Letters</span>
+                <span className={styles.modeDescription}>Practice letter precision</span>
+              </button>
+            </div>
+          </div>
         </div>
+
         <button
           type="button"
           onClick={handlePlay}
