@@ -1,4 +1,7 @@
-const BASE_URL = 'http://91.219.61.93:3011';
+import { refreshTokenApi } from '@/entities/user/api/user-api';
+import { useUserStore } from '@/entities/user/model/user.store';
+
+export const BASE_URL = 'http://91.219.61.93:3011';
 
 export type ApiResponse<TData> =
   | {
@@ -16,6 +19,7 @@ export type ApiResponse<TData> =
 export const client = async <TData>(
   endpoint: string,
   customOptions: RequestInit = {},
+  isRetry = false,
 ): Promise<ApiResponse<TData>> => {
   const accessToken = localStorage.getItem('accessToken');
 
@@ -35,20 +39,24 @@ export const client = async <TData>(
 
   return fetch(`${BASE_URL}/${endpoint}`, config)
     .then(async (response) => {
-      if (response.ok) {
-        const data: TData = await response.json();
-        return {
-          ok: true,
-          status: response.status,
-          data,
-        };
-      } else {
-        return {
-          ok: false,
-          status: response.status,
-          error: await response.text(),
-        };
+      if (response.status === 401 && !isRetry) {
+        const res = await refreshTokenApi();
+        if (res.ok && res.data) {
+          localStorage.setItem('accessToken', res.data.accessToken);
+          localStorage.setItem('refreshToken', res.data.refreshToken);
+          config.headers.Authorization = `Bearer ${res.data.accessToken}`;
+          return client<TData>(endpoint, config, true);
+        }
+        useUserStore.getState().setIsAuth(false);
       }
+
+      const data: TData = await response.json();
+
+      return {
+        ok: response.ok,
+        status: response.status,
+        ...(response.ok ? { data } : { error: await response.text() }),
+      };
     })
     .catch((error) => {
       return {

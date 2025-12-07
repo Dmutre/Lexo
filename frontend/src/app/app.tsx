@@ -3,13 +3,12 @@
 import { meApi } from '@/entities/user/api/user-api';
 import { useUserStore } from '@/entities/user/model/user.store';
 import { AuthPage } from '@/pages/auth/auth-page';
+import { HomePage } from '@/pages/home';
 import NotFoundPage from '@/pages/not-found/not-found.page';
+import { GameOver } from '@/pages/game-over/game-over';
+import { PartialsModePage } from '@/pages/partials-mode';
 import { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
-
-const HelloWorld = () => {
-  return <h1>Hello, World!</h1>;
-};
 
 export function App() {
   const isAuth = useUserStore((state) => state.isAuth);
@@ -22,14 +21,19 @@ export function App() {
         setIsAuth(true);
       }
     })();
-  }, []);
+  }, [setIsAuth]);
 
   return (
     <Routes>
       {!isAuth ? (
-        <Route path="auth" index element={<AuthPage />} />
+        <Route path="/" index element={<AuthPage />} />
       ) : (
-        <Route path="*" element={<HelloWorld />} />
+        <>
+          <Route path="/" element={<HomePage />} />
+          <Route path="partials" element={<PartialsModePage />} />
+          <Route path="letters" element={<PartialsModePage />} />
+          <Route path="game-over" element={<GameOver />} />
+        </>
       )}
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
